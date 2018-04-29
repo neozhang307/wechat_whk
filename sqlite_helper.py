@@ -1,5 +1,5 @@
 import sqlite3
-from util import *
+from util import to_text,get_text,json_loads,json_dumps
 
 __CREATE_TABLE_SQL__ = """
 CREATE TABLE IF NOT EXISTS USER_INFO
@@ -45,7 +45,7 @@ class SQLiteHelper():
         根据 id 删除数据。
         :param id: 要删除的数据的 id
         """
-        self.db.execute("DELETE FROM WeRoBot WHERE id=?;", (id, ))
+        self.db.execute("DELETE FROM USER_INFO WHERE id=?;", (id, ))
         self.db.commit()
 
 
