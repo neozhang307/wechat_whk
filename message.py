@@ -1,5 +1,45 @@
 
-from util import init_user,get_userlist,check_existence,is_homework,gen_hwmark,get_hwmark
+from util import init_user,get_userlist,check_existence
+import numpy as np
+
+def is_homework(input_str, homeworkmark):
+    #check if the str(string) has homeworkmark (set)
+    #return the str without homeworkmark as well as whether the condition is true
+    for wd in homeworkmark:
+        if(input_str.find(wd)!=-1):
+            return input_str[len(wd):],1
+    return input_str,0
+
+def is_namesmt(input_str):
+    rt = input_str.split('-')
+    if(len(rt)==1):
+        rt = input_str.split('ー')
+    if len(rt)!=2:
+        return input_str,-1
+    if rt[0]=='名前':
+        return rt[1],1
+    return input_str,0
+
+def gen_hwmark(file):
+    #generate hwmark from a specific file
+    hwm_l = set()
+    with open("hwmark") as hwmark:
+        while(True):
+            line = hwmark.readline()
+            if(len(line)==0):
+                break
+            hwm_l.add(line.replace("\n",""))
+    return list(hwm_l)
+
+def get_hwmark():
+    hwm_l = []
+    try:
+        hwm_l = np.load('data/hwmark.list.npy')
+    except IOError:
+        hwm_l = gen_hwmark("data/hwmark")
+        np.save('data/hwmark.list.npy', hwm_l)
+    return hwm_l
+
 
 def splitname(inputstr, user_d):
     #split the string to two part, real homework and name
@@ -26,12 +66,11 @@ class message:
         self.user_d,self.user_d_rev = get_userlist()
         self.hwm_l = get_hwmark() 
     #generate return masage 
-    def msg_mng(self,info,filename):
+    def msg_mng(self,info):
         rst,errid = is_homework(info, self.hwm_l)
-        if errid==0:
-            return "default",0
-        msg,name,errid = splitname(rst, self.user_d)
-        if(errid!=1):
-            return msg,errid
-        save(msg,name,filename)
-        return name+'君、御宿題、承りました',1
+        if errid==1:
+            return rst,1#宿題
+        rst,errid = is_namesmt(info)
+        if errid==1:
+            return rst,2#名前
+        return info,0

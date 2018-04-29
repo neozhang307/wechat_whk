@@ -86,31 +86,4 @@ def check_existence(unkown_str, user_d):
 
 
 
-def is_homework(input_str, homeworkmark):
-    #check if the str(string) has homeworkmark (set)
-    #return the str without homeworkmark as well as whether the condition is true
-    for wd in homeworkmark:
-        if(input_str.find(wd)!=-1):
-            return input_str[len(wd):],1
-    return input_str,0
 
-
-def gen_hwmark(file):
-    #generate hwmark from a specific file
-    hwm_l = set()
-    with open("hwmark") as hwmark:
-        while(True):
-            line = hwmark.readline()
-            if(len(line)==0):
-                break
-            hwm_l.add(line.replace("\n",""))
-    return list(hwm_l)
-
-def get_hwmark():
-    hwm_l = []
-    try:
-        hwm_l = np.load('data/hwmark.list.npy')
-    except IOError:
-        hwm_l = gen_hwmark("data/hwmark")
-        np.save('data/hwmark.list.npy', hwm_l)
-    return hwm_l
