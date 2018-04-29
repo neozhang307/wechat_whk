@@ -76,13 +76,13 @@ def check_existence(unkown_str, user_d):
         if tmp_val<=517 and tmp_val>=501:
             return user_d[tmp_val],1
         else:
-            return 'error id',0
+            return unkown_str,0
     except ValueError:
         username = unkown_str
         if username in user_d.values():
             return username,1
         else:
-            return 'error name',0
+            return unkown_str,0
 
 
 

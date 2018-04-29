@@ -8,6 +8,8 @@ from wechatpy.exceptions import InvalidSignatureException
 from wechatpy.exceptions import InvalidAppIdException
 
 from message import message
+from sqlite_helper import SQLiteHelper
+from hwk_helper import HomeworkHelper
 from time_helpter import timestamp2date
 import sys
 # set token or get from environments
@@ -63,12 +65,41 @@ def wechat():
             abort(403)
         msg = parse_message(msg)
         if msg.type == 'text':
-            info = message()
-            rpl,errid = info.msg_mng(msg.content,"data/hwd/"+str(msg.create_time.year)+'-'+str(msg.create_time.month)+'-'+str(msg.create_time.day))
-            if(errid!=1):
-                reply = create_reply(get_text(rpl),msg)
-            else:
-                reply = create_reply(rpl, msg)
+            cmsg = message()
+            psdmsg, cid = cmsg.msg_mng(msg.content)
+            appuserid=msg.source
+            print("openidis %s\n" %appuserid)
+            content=SQLiteHelper()
+            codes=content.get(appuserid)
+            print(codes)
+            known_user=0
+            if 'name' in codes.keys():
+                known_user=1
+            if cid==1:
+               #homework 
+                if known_user==1:
+                    name = codes['name']
+                    nameid = codes['name_id']
+                    hwk = HomeworkHelper(str(msg.create_time.year)+'Y'+str(msg.create_time.month)+'M'+str(msg.create_time.day)+'D')
+                    hwk.set(nameid,psdmsg)
+                else:
+                    reply = create_reply(get_text('unintuser'),msg)
+            elif cid==2:
+                #updatename
+                user_d,user_d_rev = get_userlist()
+                name,errcode = check_existence(psdmsg,user_d)
+                if errcode==1:
+                    codes.update({'name':name})
+                    codes.update({'name_id':user_d_rev[name]})
+                    content.set(appuserid,codes)
+                    reply = create_reply(name+get_text('namago')+get_text('thx'),msg)
+                else:
+                    reply = create_reply(name+get_text('unknownuser'),msg)
+            else:#uncoded message type
+                if known_user==1:
+                    reply=create_reply(codes['name']+get_text('namago')+get_text('default'),msg)
+                else:
+                    reply = create_reply(get_text('uninituser'),msg)
             #reply = create_reply(msg.content, msg)
         elif msg.type == 'event':
             if msg.event == 'subscribe':

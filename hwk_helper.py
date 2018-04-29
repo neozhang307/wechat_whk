@@ -18,10 +18,10 @@ DELETE FROM TABLENAME WHERE id=?;
 """
 
 class HomeworkHelper():
-    def __init__(self, data_string, filename='.\data\hwk\hwk.sqlite3'):
+    def __init__(self, date_string, filename='.\data\hwk\hwk.sqlite3'):
         self.db = sqlite3.connect(filename, check_same_thread=False)
         self.db.text_factory = str
-        self.tbname="HWD"+data_string
+        self.tbname="HWD"+date_string
         self.tb_sql_str=__CREATE_TABLE_SQL__.replace('TABLENAME',self.tbname)
         self.get_sql_str = __GET_SQL__.replace('TABLENAME',self.tbname)
         self.set_sql_str = __SET_SQL__.replace('TABLENAME',self.tbname)
