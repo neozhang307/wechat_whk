@@ -1,6 +1,18 @@
+import json
+import six
+
+def to_text(value, encoding="utf-8"):
+    if isinstance(value, six.text_type):
+        return value
+    if isinstance(value, six.binary_type):
+        return value.decode(encoding)
+    return six.text_type(value)
+
+
 def get_text(filename):
-    
-    with open("./data/txt/"+filename) as finput:
+    tmp = ""
+    try:
+        finput = open("./data/txt/"+filename)
         tmp = ""
         while True:
             line = finput.readline()
@@ -8,4 +20,15 @@ def get_text(filename):
                 break
             tmp+=line
         return tmp
-    return "BAD CODE"
+    except IOError:
+        return "BAD INPUT"
+
+def json_loads(s):
+    s = to_text(s)
+    return json.loads(s)
+
+
+def json_dumps(d):
+    return json.dumps(d)
+
+
