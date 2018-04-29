@@ -65,7 +65,10 @@ def wechat():
         if msg.type == 'text':
             info = message()
             rpl,errid = info.msg_mng(msg.content,"data/hwd/"+str(msg.create_time.year)+'-'+str(msg.create_time.month)+'-'+str(msg.create_time.day))
-            reply = create_reply(rpl, msg)
+            if(errid!=1):
+                reply = create_reply(get_text(rpl),msg)
+            else:
+                reply = create_reply(rpl, msg)
             #reply = create_reply(msg.content, msg)
         elif msg.type == 'event':
             if msg.event == 'subscribe':

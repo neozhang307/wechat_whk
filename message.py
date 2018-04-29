@@ -85,10 +85,10 @@ def splitname(inputstr, user_d):
     if len(rt)==1:
         rt = inputstr.split('ー')
     if len(rt)!=2:
-        return "input format is wrong",None,-1
+        return "nameformerr",None,-1
     name,errcode = check_existence(rt[1], user_d)
     if errcode==0:
-        return "the user is not existed",None,0
+        return "usernotfound",None,0
     return rt[0],name,1
 
 
@@ -107,7 +107,7 @@ class message:
     def msg_mng(self,info,filename):
         rst,errid = is_homework(info, self.hwm_l)
         if errid==0:
-            return "I don't understand",0
+            return "default",0
         msg,name,errid = splitname(rst, self.user_d)
         if(errid!=1):
             return msg,errid
