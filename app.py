@@ -27,7 +27,7 @@ def index():
     return "hello world"
 
 from util import *
-
+'''
 @app.route('/showhomework/<date>')
 def showhomework(date):
     hwker = HomeworkHelper(date)
@@ -60,6 +60,40 @@ def checkworkform():
 def checkwork():
     text = request.form['text']
     return redirect('/showcheckresult/'+text,code=302)
+'''
+
+@app.route('/showhomework/<date>')
+def showhomework(date):
+    hwker = HomeworkHelper(date)
+    user_d, user_d_rev = get_userlist()
+    homework = {user_d[uid]:hwker.get(uid) for uid in range(501,518)}
+    unsubmit = 0;
+    submit = len(homework)
+    for data in homework.values():
+        if(len(data)==0):
+            unsubmit+=1
+            submit-=1
+    return render_template("/mobile/show_dict.html",date=date, result=homework,submit=submit,unsubmit=unsubmit)
+
+@app.route('/homework/')
+def homeworkform():
+    return render_template('/mobile/form.html',date="20180501")
+
+@app.route('/homework/',methods=['POST'])
+def homework():
+    text = request.form['text']
+    if("hito" in request.form.keys()):
+        return redirect('/showcheckresult/'+text,code=302)
+    if("keka" in request.form.keys()):
+        return redirect('/showhomework/'+text,code=302)
+
+@app.route('/showcheckresult/<date>')
+def showcheckresult(date):
+    hwker = HomeworkHelper(date)
+    user_d, user_d_rev = get_userlist()
+    delayed = hwker.checkunsubmit(user_d.keys())
+    name = [user_d[id] for id in delayed]
+    return render_template("/mobile/show_list.html", data=name,date=date)
 
 @app.route('/wechat', methods=['GET', 'POST'])
 def wechat():
