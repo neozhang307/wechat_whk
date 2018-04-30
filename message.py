@@ -14,6 +14,10 @@ def is_namesmt(input_str):
     rt = input_str.split('-')
     if(len(rt)==1):
         rt = input_str.split('ー')
+    if(len(rt)==1):
+        rt = input_str.split(':')
+    if(len(rt)==1):
+        rt = input_str.split('：')
     if len(rt)!=2:
         return input_str,-1
     if rt[0]=='名前':
