@@ -19,6 +19,11 @@ DELETE FROM TABLENAME WHERE id=?;
 
 class HomeworkHelper():
     def __init__(self, date_string, filename='.\data\hwk\hwk.sqlite3'):
+        """
+        传入的日期用以建立表格。此处需要注意，默认格式为
+        20180409
+        """
+
         self.db = sqlite3.connect(filename, check_same_thread=False)
         self.db.text_factory = str
         self.tbname="HWD"+date_string

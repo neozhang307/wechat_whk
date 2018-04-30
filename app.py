@@ -28,6 +28,21 @@ def index():
 
 from util import *
 
+@app.route('/homework/<date>')
+def showhomework(date):
+    hwker = HomeworkHelper(date)
+    user_d, user_d_rev = get_userlist()
+    homework = {user_d[uid]:hwker.get(uid) for uid in range(501,518)}
+    return render_template("show_dict.html", result=homework)
+
+@app.route('/checkwork/<date>')
+def checkwork(date):
+    hwker = HomeworkHelper(date)
+    user_d, user_d_rev = get_userlist()
+    delayed = hwker.checkunsubmit(user_d.keys())
+    name = [user_d[id] for id in delayed]
+    return render_template("show_list.html", data=name)
+
 @app.route('/wechat', methods=['GET', 'POST'])
 def wechat():
     signature = request.args.get('signature', '')
@@ -81,13 +96,18 @@ def wechat():
                     name = codes['name']
                     nameid = codes['name_id']
                     year = str(msg.create_time.year)
-                    month = if(msg.create_time.month<10) "0" else ""
-                    month += msg.create_time.month
-                    day = is(msg.create_time.day<10) "0"else""
-                    day += msg.create_time.day
+                    month=""
+                    day = ""
+                    if(msg.create_time.month<10):
+                        month="0"
+                    month += str(msg.create_time.month)
+                    if(msg.create_time.day<10):
+                        day="0"
+                    day += str(msg.create_time.day)
                     hwk = HomeworkHelper(year+month+day)
                     #hwk = HomeworkHelper(str(msg.create_time.year)+'Y'+str(msg.create_time.month)+'M'+str(msg.create_time.day)+'D')
                     hwk.set(nameid,psdmsg)
+                    reply = create_reply(name+get_text('namago')+get_text('gothwk'),msg)
                 else:
                     reply = create_reply(get_text('unintuser'),msg)
             elif cid==2:
@@ -103,13 +123,13 @@ def wechat():
                     reply = create_reply(name+get_text('unknownuser'),msg)
             else:#uncoded message type
                 if known_user==1:
-                    reply=create_reply(codes['name']+get_text('namago')+get_text('default'),msg)
+                    reply=create_reply(codes['name']+get_text('namago')+get_text('default')+get_text('illustrate'),msg)
                 else:
                     reply = create_reply(get_text('uninituser'),msg)
             #reply = create_reply(msg.content, msg)
         elif msg.type == 'event':
             if msg.event == 'subscribe':
-                reply = create_reply(get_text('subscribe'),msg)
+                reply = create_reply(get_text('subscribe')+get_text('illustrate'),msg)
             else:    
                 reply = create_reply('Sorry, can not handle this for now', msg)
         else:    
