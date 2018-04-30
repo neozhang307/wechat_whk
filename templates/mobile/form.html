@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Home</title>
+<!--Custom Theme files-->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" type="text/css" media="all" />
+<!--
+<link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
+-->
+<!--web-fonts-->
+<link href='https://fonts.googleapis.com/css?family=Jura:400,300,500,600' rel='stylesheet' type='text/css'>
+<link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/jquery.mmenu.all.css?v=5.4.4') }}" />
+<!--
+<link type="text/css" rel="stylesheet" href="css/jquery.mmenu.all.css?v=5.4.4" />
+-->
+<!--//web-fonts-->
+<!-- js -->
+<!-- //js -->
+<!-- chart -->
+<!-- //chart -->
+</head>
+	<div class="signin-form profile">
+		<h3>Welcome, and </h3>
+		<h3><span>Input A Day</span></h3>
+		<div class="login-form">
+			<form method="POST">
+				<input type="text" name="text" placeholder="{{date}}" required="">
+				<input type="submit" name="hito" value="出さない人">
+				<input type="submit" name="keka" value="宿題の結果">
+			</form>
+		</div>
+	</div>
+</body>
+</html>

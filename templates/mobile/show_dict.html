@@ -22,9 +22,27 @@
 <!-- //chart -->
 </head>
 <body>
+	<div class="banner-text">
+		<div class="title">
+			<div class="title-right">
+				<h2>{{date}} の </h2>
+				<h2>宿題</h2>
+			</div>
+			<div class="clear"> </div>
+		</div>
+	</div>
+	<div class="banner-bottom">
+		<div class="banner-bottom-left">
+			<h3>{{submit}}</h3>
+			<p>Submitted </p>
+		</div>
+		<div class="banner-bottom-right">
+			<h3>{{unsubmit}}</h3>
+			<p>UnSubmitted</p>
+		</div>
+		<div class="clear"> </div>
+	</div>
 	<div class="work-text">
-		<h3>{{date}}</h3>
-		<h3>宿題は：</h3>
 		<section class="ac-container">
 		{% for key,value in result.items() %}
 			<div>
