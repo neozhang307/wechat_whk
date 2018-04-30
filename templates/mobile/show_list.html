@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Home</title>
+<!--Custom Theme files-->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" type="text/css" media="all" />
+<!--
+<link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
+-->
+<!--web-fonts-->
+<link href='https://fonts.googleapis.com/css?family=Jura:400,300,500,600' rel='stylesheet' type='text/css'>
+<link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/jquery.mmenu.all.css?v=5.4.4') }}" />
+<!--
+<link type="text/css" rel="stylesheet" href="css/jquery.mmenu.all.css?v=5.4.4" />
+-->
+<!--//web-fonts-->
+<!-- js -->
+<!-- //js -->
+<!-- chart -->
+<!-- //chart -->
+</head>
+<body>
+	<div class="work-text">
+		<h3>{{date}}</h3>
+		<h3>宿題出さない人は：</h3>
+		<section class="ac-container">
+		{% for item in data %}
+			<div>
+				<input id="ac-{{loop.index}}" name="accordion-{{loop.index}}"  />
+				<label for="ac-{{loop.index}}" class="grid{{loop.index%4}}"><i></i>{{item}}</label>
+			</div>
+		{%endfor%}
+		</section>
+	</div>
+</body>
+</html>

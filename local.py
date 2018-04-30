@@ -28,7 +28,7 @@ def showhomework(date):
     hwker = HomeworkHelper(date)
     user_d, user_d_rev = get_userlist()
     homework = {user_d[uid]:hwker.get(uid) for uid in range(501,518)}
-    return render_template("show_dict.html", result=homework)
+    return render_template("/mobile/show_dict.html",date=date, result=homework)
 
 @app.route('/homework/')
 def homeworkform():
@@ -45,7 +45,7 @@ def showcheckresult(date):
     user_d, user_d_rev = get_userlist()
     delayed = hwker.checkunsubmit(user_d.keys())
     name = [user_d[id] for id in delayed]
-    return render_template("show_list.html", data=name)
+    return render_template("/mobile/show_list.html", data=name,date=date)
 
 @app.route('/checkwork/')
 def checkworkform():
