@@ -80,7 +80,13 @@ def wechat():
                 if known_user==1:
                     name = codes['name']
                     nameid = codes['name_id']
-                    hwk = HomeworkHelper(str(msg.create_time.year)+'Y'+str(msg.create_time.month)+'M'+str(msg.create_time.day)+'D')
+                    year = str(msg.create_time.year)
+                    month = if(msg.create_time.month<10) "0" else ""
+                    month += msg.create_time.month
+                    day = is(msg.create_time.day<10) "0"else""
+                    day += msg.create_time.day
+                    hwk = HomeworkHelper(year+month+day)
+                    #hwk = HomeworkHelper(str(msg.create_time.year)+'Y'+str(msg.create_time.month)+'M'+str(msg.create_time.day)+'D')
                     hwk.set(nameid,psdmsg)
                 else:
                     reply = create_reply(get_text('unintuser'),msg)
