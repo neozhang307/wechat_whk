@@ -1,0 +1,12 @@
+<table>
+{% for key, value in result.items() %}
+   <tr>
+        <th> {{ key }}:</th>
+	{%if value|length==0 %}
+	<td>	unsubmitted <td>
+	{%else%}
+	<td>	{{ value }} <td>
+	{%endif%}
+   </tr>
+{% endfor %}
+</table>
