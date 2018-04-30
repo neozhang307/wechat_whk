@@ -172,12 +172,12 @@ def wechat():
                     content.set(appuserid,codes)
                     reply = create_reply(name+get_text('namago')+get_text('thx'),msg)
                 else:
-                    reply = create_reply(name+get_text('unknownuser'),msg)
+                    reply = create_reply(get_text('uninituser')+get_text('illustrate'),msg)
             else:#uncoded message type
                 if known_user==1:
                     reply=create_reply(codes['name']+get_text('namago')+get_text('default')+get_text('illustrate'),msg)
                 else:
-                    reply = create_reply(get_text('uninituser'),msg)
+                    reply = create_reply(get_text('uninituser')+get_text('illustrate'),msg)
             #reply = create_reply(msg.content, msg)
         elif msg.type == 'event':
             if msg.event == 'subscribe':
