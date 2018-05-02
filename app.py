@@ -185,7 +185,7 @@ def wechat():
                     content.set(appuserid,codes)
                     reply = create_reply(name+get_text('namago')+get_text('thx'),msg)
                 else:
-                    reply = create_reply(get_text('uninituser')+get_text('illustrate'),msg)
+                    reply = create_reply(name+'さんは'+get_text('uninituser')+get_text('illustrate'),msg)
             else:#uncoded message type
                 if known_user==1:
                     reply=create_reply(codes['name']+get_text('namago')+get_text('default')+get_text('illustrate'),msg)
@@ -207,4 +207,5 @@ def wechat():
 
 
 if __name__ == '__main__':
+    app.jinja_env.add_extension('jinja2.ext.loopcontrols')
     app.run('127.0.0.1', 5000, debug=True)

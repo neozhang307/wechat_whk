@@ -1,11 +1,10 @@
 <table>
 {% for key, value in result.items() %}
-   <tr>
-        <td> {{ key }}:</td>
 	{%if value|length==0 %}
-	{%else%}
-	<td>	{{ value }} <td>
+		{%continue%}
 	{%endif%}
-   </tr>
+   	<tr>
+        	<td>{{ key }}:{{ value }}<td>
+   	</tr>
 {% endfor %}
 </table>
