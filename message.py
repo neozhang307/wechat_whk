@@ -22,6 +22,8 @@ def is_namesmt(input_str):
         return input_str,-1
     if rt[0]=='名前':
         return rt[1],1
+    if rt[0]=='番号':
+        return rt[1],1
     return input_str,0
 
 def gen_hwmark(file):
