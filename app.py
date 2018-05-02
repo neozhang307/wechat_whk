@@ -75,6 +75,19 @@ def showhomework(date):
             submit-=1
     return render_template("/mobile/show_dict.html",date=date, result=homework,submit=submit,unsubmit=unsubmit)
 
+@app.route('/showhomework2/<date>')
+def showhomework2(date):
+    hwker = HomeworkHelper(date)
+    user_d, user_d_rev = get_userlist()
+    homework = {user_d[uid]:hwker.get(uid) for uid in range(501,518)}
+    unsubmit = 0;
+    submit = len(homework)
+    for data in homework.values():
+        if(len(data)==0):
+            unsubmit+=1
+            submit-=1
+    return render_template("/show_dict.html",date=date, result=homework,submit=submit,unsubmit=unsubmit)
+
 @app.route('/homework/')
 def homeworkform():
     return render_template('/mobile/form.html',date="20180501")
