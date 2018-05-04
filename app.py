@@ -174,7 +174,7 @@ def wechat():
                     hwk.set(nameid,psdmsg)
                     reply = create_reply(name+get_text('namago')+get_text('gothwk'),msg)
                 else:
-                    reply = create_reply(get_text('unintuser'),msg)
+                    reply = create_reply(get_text('uninituser')+get_text('illustrate'),msg)
             elif cid==2:
                 #updatename
                 user_d,user_d_rev = get_userlist()
