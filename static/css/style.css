@@ -216,7 +216,6 @@ ul.nav1 li a:hover,ul.nav li a:hover{
 	transition: height 0.3s ease-in-out, box-shadow 0.6s linear;
 }
 .ac-container article p {
-    line-height: 21px;
     font-size: 0.9em;
     padding: 10px 24px;
     color: #FFFFFF;
@@ -231,7 +230,7 @@ ul.nav1 li a:hover,ul.nav li a:hover{
 	background-color: #E259C6;
 }
 .ac-container input:checked ~ article.ac-small{
-	height: 65px;
+	height: auto;
 }
 .ac-container label i {
     font-size: 1em;
@@ -802,7 +801,7 @@ h1 {
     height: 502px !important;
 }
 .ac-container input:checked ~ article.ac-small {
-    height: 57px;
+     height: auto;
 }
 .profile {
     margin-top: 1.7em;
