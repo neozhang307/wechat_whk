@@ -155,6 +155,8 @@ def wechat():
             known_user=0
             if 'name' in codes.keys():
                 known_user=1
+            if(known_user!=1 and(cid!=2 or cid!=3)):
+                reply = create_reply(get_text('uninituser')+get_text('illustrate'),msg)
             if cid==1:
                #homework 
                 if known_user==1:
@@ -173,9 +175,7 @@ def wechat():
                     #hwk = HomeworkHelper(str(msg.create_time.year)+'Y'+str(msg.create_time.month)+'M'+str(msg.create_time.day)+'D')
                     hwk.set(nameid,psdmsg)
                     reply = create_reply(name+get_text('namago')+get_text('gothwk'),msg)
-                else:
-                    reply = create_reply(get_text('uninituser')+get_text('illustrate'),msg)
-            elif cid==2:
+            elif cid==2 or cid==3:
                 #updatename
                 user_d,user_d_rev = get_userlist()
                 name,errcode = check_existence(psdmsg,user_d)
@@ -185,16 +185,22 @@ def wechat():
                     content.set(appuserid,codes)
                     reply = create_reply(name+get_text('namago')+get_text('thx'),msg)
                 else:
-                    reply = create_reply(name+'さんは'+get_text('uninituser')+get_text('illustrate'),msg)
+                    reply = create_reply(name+'さんは'+get_text('uninituser')+get_text('gethelp'),msg)
+            elif cid==4:
+                reply = create_reply("get homework",msg)
+            elif cid==8:
+                reply = create_reply(get_text('illustrate'),msg)
+            elif cid==9:
+                reply = create_reply("set homework",msg)
             else:#uncoded message type
                 if known_user==1:
-                    reply=create_reply(codes['name']+get_text('namago')+get_text('default')+get_text('illustrate'),msg)
+                    reply=create_reply(codes['name']+get_text('namago')+get_text('default')+get_text('gethelp'),msg)
                 else:
-                    reply = create_reply(get_text('uninituser')+get_text('illustrate'),msg)
+                    reply = create_reply(get_text('uninituser')+get_text('gethelp'),msg)
             #reply = create_reply(msg.content, msg)
         elif msg.type == 'event':
             if msg.event == 'subscribe':
-                reply = create_reply(get_text('subscribe')+get_text('illustrate'),msg)
+                reply = create_reply(get_text('subscribe')+get_text('gethelp'),msg)
             else:    
                 reply = create_reply('Sorry, can not handle this for now', msg)
         else:    

@@ -42,9 +42,9 @@ def split_msg(input_str):
     if(len(rt)==1):
         rt = input_str.split('：')
     if len(rt)==1:
-        return rt[0], NULL, 0
+        return rt[0], "", 0
     if len(rt)!=2:
-        return input_str, NULL, -1
+        return input_str, "", -1
     
     return rt[0],rt[1],1
 
