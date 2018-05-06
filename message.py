@@ -11,6 +11,29 @@ def is_homework(input_str, homeworkmark):
     return input_str,0
 
 def is_namesmt(input_str):
+    if input_str=='名前':
+        return 1
+    return 0
+
+def is_numbersmt(input_str):
+    if input_str=='番号':
+        return 1
+    return 0
+
+def is_hwkstm(input_str):
+    if input_str=='宿題':
+        return 1
+    return 0
+def is_ilusstm(input_str):
+    if input_str=='説明':
+        return 1
+    return 0
+def is_mkhwkstm(input_str):
+    if input_str=='宿題の指定':
+        return 1
+    return 0
+
+def split_msg(input_str):
     rt = input_str.split('-')
     if(len(rt)==1):
         rt = input_str.split('ー')
@@ -18,14 +41,14 @@ def is_namesmt(input_str):
         rt = input_str.split(':')
     if(len(rt)==1):
         rt = input_str.split('：')
+    if len(rt)==1:
+        return rt[0], NULL, 0
     if len(rt)!=2:
-        return input_str,-1
-    if rt[0]=='名前':
-        return rt[1],1
-    if rt[0]=='番号':
-        return rt[1],1
-    return input_str,0
+        return input_str, NULL, -1
+    
+    return rt[0],rt[1],1
 
+        
 def gen_hwmark(file):
     #generate hwmark from a specific file
     hwm_l = set()
@@ -47,19 +70,6 @@ def get_hwmark():
     return hwm_l
 
 
-def splitname(inputstr, user_d):
-    #split the string to two part, real homework and name
-    rt = inputstr.split('-')
-    if len(rt)==1:
-        rt = inputstr.split('ー')
-    if len(rt)!=2:
-        return "nameformerr",None,-1
-    name,errcode = check_existence(rt[1], user_d)
-    if errcode==0:
-        return "usernotfound",None,0
-    return rt[0],name,1
-
-
 def save(inputstr,name,filename):
     with open(filename,'a') as op:
         op.write(name+":\n\n")
@@ -76,7 +86,19 @@ class message:
         rst,errid = is_homework(info, self.hwm_l)
         if errid==1:
             return rst,1#宿題
-        rst,errid = is_namesmt(info)
-        if errid==1:
-            return rst,2#名前
+        
+        stm,msg,errid = split_msg(info)
+        
+        if errid==-1:
+            return info,0
+        if(is_ilusstm(stm)==1):
+            return msg,8#query hwk
+        if(is_namesmt(stm)==1):
+            return msg,2#名前
+        if(is_numbersmt(stm)==1):
+            return msg,3#bango
+        if(is_hwkstm(stm)==1):
+            return msg,4#query hwk
+        if(is_mkhwkstm(stm)==1):
+            return msg,9#set hwk
         return info,0
