@@ -52,7 +52,7 @@ def split_msg(input_str):
 def gen_hwmark(file):
     #generate hwmark from a specific file
     hwm_l = set()
-    with open("hwmark") as hwmark:
+    with open("data/hwmark") as hwmark:
         while(True):
             line = hwmark.readline()
             if(len(line)==0):
