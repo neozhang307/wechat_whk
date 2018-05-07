@@ -65,6 +65,21 @@ def get_userlist():
         user_d,user_d_rev = init_user("data/person")
         np.save('data/ser.dic.npy', user_d)
         np.save('data/user_rev.dic.npy', user_d_rev)
+    user_d_rev.pop(user_d[0],None)
+    user_d.pop(0, None)
+    return user_d,user_d_rev
+
+def get_all_userlist():
+    ## simply init user
+    user_d = {}
+    user_d_rev = {}
+    try:
+        user_d = np.load("data/user.dic.npy").item()
+        user_d_rev = np.load("data/user_rev.dic.npy").item()
+    except IOError:
+        user_d,user_d_rev = init_user("data/person")
+        np.save('data/ser.dic.npy', user_d)
+        np.save('data/user_rev.dic.npy', user_d_rev)
     return user_d,user_d_rev
 
 def check_existence(unkown_str, user_d):

@@ -10,6 +10,7 @@ from wechatpy.exceptions import InvalidAppIdException
 from message import message
 from sqlite_helper import SQLiteHelper
 from hwk_helper import HomeworkHelper
+from sethwk_helper import SetHomeworkHelper
 from time_helpter import timestamp2date
 import sys
 # set token or get from environments
@@ -27,41 +28,6 @@ def index():
     return "hello world"
 
 from util import *
-'''
-@app.route('/showhomework/<date>')
-def showhomework(date):
-    hwker = HomeworkHelper(date)
-    user_d, user_d_rev = get_userlist()
-    homework = {user_d[uid]:hwker.get(uid) for uid in range(501,518)}
-    return render_template("show_dict.html", result=homework)
-
-@app.route('/homework/')
-def homeworkform():
-    return render_template('my-form.html')
-
-@app.route('/homework/',methods=['POST'])
-def homework():
-    text = request.form['text']
-    return redirect('/showhomework/'+text,code=302)
-
-@app.route('/showcheckresult/<date>')
-def showcheckresult(date):
-    hwker = HomeworkHelper(date)
-    user_d, user_d_rev = get_userlist()
-    delayed = hwker.checkunsubmit(user_d.keys())
-    name = [user_d[id] for id in delayed]
-    return render_template("show_list.html", data=name)
-
-@app.route('/checkwork/')
-def checkworkform():
-    return render_template('my-form.html')
-
-@app.route('/checkwork/',methods=['POST'])
-def checkwork():
-    text = request.form['text']
-    return redirect('/showcheckresult/'+text,code=302)
-'''
-
 @app.route('/showhomework/<date>')
 def showhomework(date):
     hwker = HomeworkHelper(date)
@@ -75,7 +41,6 @@ def showhomework(date):
             submit-=1
     return render_template("/mobile/show_dict.html",date=date, result=homework,submit=submit,unsubmit=unsubmit)
 
-@app.route('/showhomework2/<date>')
 def showhomework2(date):
     hwker = HomeworkHelper(date)
     user_d, user_d_rev = get_userlist()
@@ -162,36 +127,39 @@ def wechat():
                 if known_user==1:
                     name = codes['name']
                     nameid = codes['name_id']
-                    year = str(msg.create_time.year)
-                    month=""
-                    day = ""
-                    if(msg.create_time.month<10):
-                        month="0"
-                    month += str(msg.create_time.month)
-                    if(msg.create_time.day<10):
-                        day="0"
-                    day += str(msg.create_time.day)
-                    hwk = HomeworkHelper(year+month+day)
-                    #hwk = HomeworkHelper(str(msg.create_time.year)+'Y'+str(msg.create_time.month)+'M'+str(msg.create_time.day)+'D')
+                    hwk = HomeworkHelper(msg.create_time.strftime("%Y%m%d"))
                     hwk.set(nameid,psdmsg)
                     reply = create_reply(name+get_text('namago')+get_text('gothwk'),msg)
             elif cid==2 or cid==3:
                 #updatename
-                user_d,user_d_rev = get_userlist()
+                user_d,user_d_rev = get_all_userlist()
                 name,errcode = check_existence(psdmsg,user_d)
                 if errcode==1:
                     codes.update({'name':name})
                     codes.update({'name_id':user_d_rev[name]})
                     content.set(appuserid,codes)
-                    reply = create_reply(name+get_text('namago')+get_text('thx'),msg)
+                    if user_d_rev[name]==0:
+                        reply = create_reply(name+"先生"+get_text('thx'),msg)
+                    else:
+                        reply = create_reply(name+get_text('namago')+get_text('thx'),msg)
                 else:
                     reply = create_reply(name+'さんは'+get_text('uninituser')+get_text('gethelp'),msg)
             elif cid==4:
-                reply = create_reply("get homework",msg)
+                hwk = SetHomeworkHelper()
+                mhk = hwk.get(msg.create_time.strftime("%Y%m%d"))
+                if(len(mhk)==0):
+                    reply = create_reply(get_text("nohomework"),msg)
+                else:
+                    reply = create_reply(mhk,msg)
             elif cid==8:
                 reply = create_reply(get_text('illustrate'),msg)
             elif cid==9:
-                reply = create_reply("set homework",msg)
+                if(len(psdmsg)==0):
+                    reply = create_reply("should longer than 0",msg)
+                else:
+                    hwk = SetHomeworkHelper()
+                    mhk = hwk.set(msg.create_time.strftime("%Y%m%d"),psdmsg)
+                    reply = create_reply("sucess",msg)
             else:#uncoded message type
                 if known_user==1:
                     reply=create_reply(codes['name']+get_text('namago')+get_text('default')+get_text('gethelp'),msg)
