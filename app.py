@@ -34,15 +34,15 @@ def showhomework(date):
     hwker = BunHelper(date)
     user_d, user_d_rev = get_userlist()
     
-    unsubmit = len(homework);
+    unsubmit = len(user_d);
     submit = 0;
     
     if hwker.is_ext()==1:
         homework = {user_d[uid]:hwker.get(uid) for uid in range(501,518)}
         for data in homework.values():
-            if(len(data)==0):
-                unsubmit+=1
-                submit-=1
+            if(len(data)!=0):
+                unsubmit-=1
+                submit+=1
     else:
         homework = {user_d[uid]:"" for uid in range(501,518)}
     return render_template("/mobile/show_dict.html",date=date, result=homework,submit=submit,unsubmit=unsubmit)
