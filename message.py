@@ -7,7 +7,7 @@ def is_homework(input_str, homeworkmark):
     #return the str without homeworkmark as well as whether the condition is true
     for wd in homeworkmark:
         if(input_str.find(wd)!=-1):
-            return input_str[len(wd):],1
+            return input_str,1
     return input_str,0
 
 def is_namesmt(input_str):
