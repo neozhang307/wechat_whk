@@ -7,7 +7,7 @@ from wechatpy.utils import check_signature
 from wechatpy.exceptions import InvalidSignatureException
 from wechatpy.exceptions import InvalidAppIdException
 
-from message import message
+from message import message,split_msg
 from sqlite_helper import SQLiteHelper
 from hwk_helper import HomeworkHelper
 from scbun_helper import BunHelper
@@ -154,6 +154,29 @@ def wechat():
                     reply = create_reply(get_text("nohomework"),msg)
                 else:
                     reply = create_reply(mhk,msg)
+                    
+                    
+            elif cid==5:#get sakubun in specific date
+                date = psdmsg
+                hwker = BunHelper(date)
+                
+                if hwker.is_ext()==1:
+                    reply = create_reply(hwker.get(codes['name_id']),msg)
+                else:
+                    reply = create_reply("",msg)
+            elif cid==6:#modify sakubun
+                data, nbun, errid = split_msg(input_str)
+                if(errid!=1):
+                    reply = create_reply("formaterror",msg)
+                else:
+                    hwker = BunHelper(date)
+                    if hwker.is_ext()==1:
+                        pre = hwker.get(codes['name_id'])
+                        hwker.set(codes['name_id'],nbun)
+                        reply = create_reply("change \""+pre+"\" to \""+nbun+"\"",msg)
+                    else:
+                        reply = create_reply("nobun",msg)
+                
             elif cid==8:
                 reply = create_reply(get_text('illustrate'),msg)
             elif cid==9:

@@ -109,10 +109,12 @@ class message:
             return msg,3#bango
         if(is_hwkstm(stm)==1):
             return msg,4#query hwk
-        if(is_hwkstm(stm)==1):
-            return msg,5#
+
+        if(is_getbunstm(stm)==1):
+            return msg,5#get sakubun in specific date
         if(is_rebunstm(stm)==1):
-            return msg,6#
+            return msg,6#modify sakubun
+        
         if(is_getbunstm(stm)==1):
             return msg,8#query hwk
         if(is_mkhwkstm(stm)==1):
