@@ -25,7 +25,8 @@ app = Flask(__name__)
 def index():
     host = request.url_root
  #   return render_template('index.html', host=host)
-    return "hello world"
+    #return "hello world"
+    return redirect('/homework/',code=302)
 
 from util import *
 @app.route('/showhomework/<date>')
