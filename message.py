@@ -24,6 +24,7 @@ def is_hwkstm(input_str):
     if input_str=='宿題':
         return 1
     return 0
+
 def is_ilusstm(input_str):
     if input_str=='説明':
         return 1
@@ -33,18 +34,29 @@ def is_mkhwkstm(input_str):
         return 1
     return 0
 
+#recommit sakubun
+def is_rebunstm(input_str):
+    if input_str=='补交作文':
+        return 1
+    return 0
+
+#get sakubun statement
+def is_getbunstm(input_str):
+    if input_str=='作文':
+        return 1
+    return 0
+
+
 def split_msg(input_str):
-    rt = input_str.split('-')
+    rt = input_str.split('-',1)
     if(len(rt)==1):
-        rt = input_str.split('ー')
+        rt = input_str.split('ー',1)
     if(len(rt)==1):
-        rt = input_str.split(':')
+        rt = input_str.split(':',1)
     if(len(rt)==1):
-        rt = input_str.split('：')
+        rt = input_str.split('：',1)
     if len(rt)==1:
         return rt[0], "", 0
-    if len(rt)!=2:
-        return input_str, "", -1
     
     return rt[0],rt[1],1
 
@@ -91,14 +103,18 @@ class message:
         
         if errid==-1:
             return info,0
-        if(is_ilusstm(stm)==1):
-            return msg,8#query hwk
         if(is_namesmt(stm)==1):
             return msg,2#名前
         if(is_numbersmt(stm)==1):
             return msg,3#bango
         if(is_hwkstm(stm)==1):
             return msg,4#query hwk
+        if(is_hwkstm(stm)==1):
+            return msg,5#
+        if(is_rebunstm(stm)==1):
+            return msg,6#
+        if(is_getbunstm(stm)==1):
+            return msg,8#query hwk
         if(is_mkhwkstm(stm)==1):
             return msg,9#set hwk
         return info,0

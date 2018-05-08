@@ -10,8 +10,8 @@ from wechatpy.exceptions import InvalidAppIdException
 from message import message
 from sqlite_helper import SQLiteHelper
 from hwk_helper import HomeworkHelper
+from scbun_helper import BunHelper
 from sethwk_helper import SetHomeworkHelper
-from time_helpter import timestamp2date
 import sys
 # set token or get from environments
 TOKEN = os.getenv('WECHAT_TOKEN', 'imneo')
@@ -31,28 +31,30 @@ def index():
 from util import *
 @app.route('/showhomework/<date>')
 def showhomework(date):
-    hwker = HomeworkHelper(date)
+    hwker = BunHelper(date)
     user_d, user_d_rev = get_userlist()
-    homework = {user_d[uid]:hwker.get(uid) for uid in range(501,518)}
-    unsubmit = 0;
-    submit = len(homework)
-    for data in homework.values():
-        if(len(data)==0):
-            unsubmit+=1
-            submit-=1
+    
+    unsubmit = len(homework);
+    submit = 0;
+    
+    if hwker.is_ext()==1:
+        homework = {user_d[uid]:hwker.get(uid) for uid in range(501,518)}
+        for data in homework.values():
+            if(len(data)==0):
+                unsubmit+=1
+                submit-=1
+    else:
+        homework = {user_d[uid]:"" for uid in range(501,518)}
     return render_template("/mobile/show_dict.html",date=date, result=homework,submit=submit,unsubmit=unsubmit)
 
 def showhomework2(date):
-    hwker = HomeworkHelper(date)
+    hwker = BunHelper(date)
     user_d, user_d_rev = get_userlist()
-    homework = {user_d[uid]:hwker.get(uid) for uid in range(501,518)}
-    unsubmit = 0;
-    submit = len(homework)
-    for data in homework.values():
-        if(len(data)==0):
-            unsubmit+=1
-            submit-=1
-    return render_template("/show_dict.html",date=date, result=homework,submit=submit,unsubmit=unsubmit)
+    if hwker.is_ext()==1:
+        homework = {user_d[uid]:hwker.get(uid) for uid in range(501,518)}
+    else:
+        homework = {user_d[uid]:"" for uid in range(501,518)}
+    return render_template("/show_dict.html",date=date, result=homework)
 
 @app.route('/homework/')
 def homeworkform():
