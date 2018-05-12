@@ -120,18 +120,21 @@ def wechat():
             codes=content.get(appuserid)
             print("psdmsg is "+psdmsg)
             known_user=0
-            if 'name' in codes.keys():
+            if 'name_id' in codes.keys():
                 known_user=1
             if(known_user!=1 and(cid!=2 or cid!=3)):
                 reply = create_reply(get_text('uninituser')+get_text('illustrate'),msg)
             if cid==1:
-               #homework 
-                if known_user==1:
-                    name = codes['name']
+               #submit homework 
+                if len(psdmsg)>4:
                     nameid = codes['name_id']
+                    user_d,user_d_rev = get_all_userlist()
+                    name = user_d[name_id]
                     hwk = HomeworkHelper(msg.create_time.strftime("%Y%m%d"))
                     hwk.set(nameid,psdmsg)
                     reply = create_reply(name+get_text('namago')+get_text('gothwk'),msg)
+                else:
+                    reply = create_reply("should longer than 0",msg)
             elif cid==2 or cid==3:
                 #updatename
                 user_d,user_d_rev = get_all_userlist()
@@ -160,9 +163,12 @@ def wechat():
                 hwker = BunHelper(date)
                 
                 if hwker.is_ext()==1:
-                    reply = create_reply(hwker.get(codes['name_id']),msg)
+                    if len(hwker.get(codes['name_id']))!=0:
+                        reply = create_reply(hwker.get(codes['name_id']),msg)
+                    else:
+                        reply = create_reply("unsubmit",msg)
                 else:
-                    reply = create_reply("unsubmit",msg)
+                    reply = create_reply(get_text("nobun"),msg)
             elif cid==6:#modify sakubun
                 date, nbun, errid = split_msg(psdmsg)
                 if(errid!=1):
@@ -174,7 +180,7 @@ def wechat():
                         hwker.set(codes['name_id'],nbun)
                         reply = create_reply("change \""+pre+"\" to \""+nbun+"\"",msg)
                     else:
-                        reply = create_reply("nobun",msg)
+                        reply = create_reply(get_text("nobun"),msg)
                 
             elif cid==8:
                 reply = create_reply(get_text('illustrate'),msg)
@@ -187,7 +193,9 @@ def wechat():
                     reply = create_reply("sucess",msg)
             else:#uncoded message type
                 if known_user==1:
-                    reply=create_reply(codes['name']+get_text('namago')+get_text('default')+get_text('gethelp'),msg)
+                    user_d,user_d_rev = get_all_userlist()
+                    name = user_d[codes['name_id']]
+                    reply=create_reply(name+get_text('namago')+get_text('default')+get_text('gethelp'),msg)
                 else:
                     reply = create_reply(get_text('uninituser')+get_text('gethelp'),msg)
             #reply = create_reply(msg.content, msg)

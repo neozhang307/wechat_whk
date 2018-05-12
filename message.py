@@ -6,7 +6,7 @@ def is_homework(input_str, homeworkmark):
     #check if the str(string) has homeworkmark (set)
     #return the str without homeworkmark as well as whether the condition is true
     for wd in homeworkmark:
-        if(input_str[:4].find(wd)!=-1):
+        if(input_str[1:4].find(wd)!=-1):
             return input_str,1
     return input_str,0
 
