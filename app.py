@@ -162,7 +162,7 @@ def wechat():
                 if hwker.is_ext()==1:
                     reply = create_reply(hwker.get(codes['name_id']),msg)
                 else:
-                    reply = create_reply("",msg)
+                    reply = create_reply("unsubmit",msg)
             elif cid==6:#modify sakubun
                 date, nbun, errid = split_msg(psdmsg)
                 if(errid!=1):
