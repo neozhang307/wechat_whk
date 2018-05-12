@@ -116,10 +116,9 @@ def wechat():
             cmsg = message()
             psdmsg, cid = cmsg.msg_mng(msg.content)
             appuserid=msg.source
-            print("openidis %s\n" %appuserid)
             content=SQLiteHelper()
             codes=content.get(appuserid)
-            print(codes)
+            print("psdmsg is "+psdmsg)
             known_user=0
             if 'name' in codes.keys():
                 known_user=1
@@ -165,7 +164,7 @@ def wechat():
                 else:
                     reply = create_reply("",msg)
             elif cid==6:#modify sakubun
-                data, nbun, errid = split_msg(input_str)
+                date, nbun, errid = split_msg(psdmsg)
                 if(errid!=1):
                     reply = create_reply("formaterror",msg)
                 else:

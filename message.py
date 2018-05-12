@@ -6,7 +6,7 @@ def is_homework(input_str, homeworkmark):
     #check if the str(string) has homeworkmark (set)
     #return the str without homeworkmark as well as whether the condition is true
     for wd in homeworkmark:
-        if(input_str.find(wd)!=-1):
+        if(input_str[:4].find(wd)!=-1):
             return input_str,1
     return input_str,0
 
@@ -36,7 +36,7 @@ def is_mkhwkstm(input_str):
 
 #recommit sakubun
 def is_rebunstm(input_str):
-    if input_str=='补交作文':
+    if input_str=='修改作文':
         return 1
     return 0
 
@@ -49,16 +49,23 @@ def is_getbunstm(input_str):
 
 def split_msg(input_str):
     rt = input_str.split('-',1)
-    if(len(rt)==1):
+    if len(rt)==2:
+        return rt[0],rt[1],1
+    elif(len(rt)==1):
         rt = input_str.split('ー',1)
-    if(len(rt)==1):
+    if len(rt)==2:
+        return rt[0],rt[1],1
+    elif(len(rt)==1):
         rt = input_str.split(':',1)
-    if(len(rt)==1):
+    if len(rt)==2:
+        return rt[0],rt[1],1
+    elif(len(rt)==1):
         rt = input_str.split('：',1)
-    if len(rt)==1:
+    if len(rt)==2:
+        return rt[0],rt[1],1
+    else:
         return rt[0], "", 0
     
-    return rt[0],rt[1],1
 
         
 def gen_hwmark(file):
@@ -115,7 +122,7 @@ class message:
         if(is_rebunstm(stm)==1):
             return msg,6#modify sakubun
         
-        if(is_getbunstm(stm)==1):
+        if(is_ilusstm(stm)==1):
             return msg,8#query hwk
         if(is_mkhwkstm(stm)==1):
             return msg,9#set hwk
