@@ -21,7 +21,7 @@ AppId = os.getenv('WECHAT_APP_ID', 'wxb580d81e415849e1')
 app = Flask(__name__)
 
 
-@app.route('/')
+#@app.route('/')
 def index():
     host = request.url_root
  #   return render_template('index.html', host=host)
@@ -47,6 +47,7 @@ def showhomework(date):
         homework = {user_d[uid]:"" for uid in range(501,518)}
     return render_template("/mobile/show_dict.html",date=date, result=homework,submit=submit,unsubmit=unsubmit)
 
+@app.route('/showhomework2/<date>')
 def showhomework2(date):
     hwker = BunHelper(date)
     user_d, user_d_rev = get_userlist()
@@ -129,7 +130,7 @@ def wechat():
                 if len(psdmsg)>4:
                     nameid = codes['name_id']
                     user_d,user_d_rev = get_all_userlist()
-                    name = user_d[name_id]
+                    name = user_d[nameid]
                     hwk = HomeworkHelper(msg.create_time.strftime("%Y%m%d"))
                     hwk.set(nameid,psdmsg)
                     reply = create_reply(name+get_text('namago')+get_text('gothwk'),msg)
@@ -171,6 +172,8 @@ def wechat():
                     reply = create_reply(get_text("nobun"),msg)
             elif cid==6:#modify sakubun
                 date, nbun, errid = split_msg(psdmsg)
+                print("date"+date)
+                print("bun"+nbun)
                 if(errid!=1):
                     reply = create_reply("formaterror",msg)
                 else:
